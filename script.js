@@ -2,13 +2,13 @@ document.addEventListener("DOMContentLoaded", function () {
     showPage('home'); // Show Home by default
 
     const menuIcon = document.querySelector(".menu-icon");
-    const navMenu = document.getElementById("navMenu");
+    const navMenu = document.querySelector(".nav-menu"); // Ensure correct selection
 
     menuIcon.addEventListener("click", function () {
         navMenu.classList.toggle("show");
     });
 
-    // Close menu on item click (for mobile)
+    // Close menu when a link is clicked (for mobile view)
     document.querySelectorAll(".nav-menu li a").forEach(link => {
         link.addEventListener("click", function () {
             navMenu.classList.remove("show");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Page switching with smooth animation
+// Function to switch pages
 function showPage(pageId) {
     const pages = document.querySelectorAll(".page");
 
@@ -30,11 +30,6 @@ function showPage(pageId) {
     setTimeout(() => {
         activePage.classList.add("active", "fade-in");
     }, 50);
-}
-
-// Mobile menu toggle
-function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
 }
 
 // Finance logic
@@ -82,6 +77,10 @@ function updateRecentTransactions() {
     recent.forEach(t => {
         const li = document.createElement("li");
         li.textContent = `${t.type.toUpperCase()}: $${t.amount} - ${t.category}`;
+        
+        // Add color class
+        li.classList.add(t.type);
+        
         list.appendChild(li);
     });
 }
@@ -111,12 +110,53 @@ function updateHistory() {
         const li = document.createElement("li");
         const date = new Date(t.date).toLocaleString();
         li.textContent = `${date} - ${t.type.toUpperCase()}: $${t.amount} - ${t.category}`;
+
+        // Add color class
         li.classList.add(t.type);
+
         list.appendChild(li);
     });
 }
 
+// Logout function
 function logout() {
     alert("Logging out...");
     // Redirect or clear user session here
+}
+
+
+// Show logout confirmation modal
+function logout() {
+    document.getElementById("logout-modal").style.display = "flex";
+}
+
+// Close modal
+function closeModal() {
+    document.getElementById("logout-modal").style.display = "none";
+}
+
+// Confirm logout with a professional toast notification
+function confirmLogout() {
+    closeModal(); // Close the modal first
+    showToast("You have been logged out successfully.");
+    setTimeout(() => {
+        // Redirect or clear session (Example: window.location.href = 'login.html';)
+    }, 2000); // Redirect after 2 seconds
+}
+
+// Show toast notification
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add("show"); // Slide-in effect
+    }, 100);
+
+    setTimeout(() => {
+        toast.classList.remove("show"); // Slide-out effect
+        setTimeout(() => toast.remove(), 300);
+    }, 3000); // Hide after 3 seconds
 }
