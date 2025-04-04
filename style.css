@@ -14,6 +14,7 @@ body {
     background-repeat: no-repeat;
     color: #333;
     padding: 20px;
+    transition: background-color 0.5s ease, filter 0.3s ease-in-out;
 }
 
 /* Navbar */
@@ -29,12 +30,14 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: all 0.3s ease-in-out;
 }
 
 .nav-title {
-    font-size: 1.7rem;
+    font-size: 2.2rem;
     font-weight: bold;
     letter-spacing: 1px;
+    transition: font-size 0.3s ease-in-out;
 }
 
 /* Navigation menu */
@@ -42,13 +45,14 @@ body {
     display: none;
     font-size: 1.8rem;
     cursor: pointer;
+    transition: font-size 0.3s ease-in-out;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
     gap: 20px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .nav-menu li a {
@@ -57,7 +61,7 @@ body {
     font-size: 1rem;
     padding: 8px 14px;
     border-radius: 6px;
-    transition: background 0.3s;
+    transition: background 0.3s ease, padding 0.3s ease;
 }
 
 .nav-menu li a:hover {
@@ -68,7 +72,7 @@ body {
 .nav-menu li:last-child {
     background-color: #e74c3c;
     border-radius: 6px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .nav-menu li:last-child a {
@@ -100,11 +104,63 @@ body {
 
     .nav-menu.show {
         display: flex;
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .nav-menu li {
         text-align: center;
         margin: 10px 0;
+    }
+
+    .nav-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* Responsive for 600px */
+@media (max-width: 600px) {
+    .navbar {
+        padding: 12px 15px;
+    }
+
+    h1 {
+        font-size: 2.6rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .nav-title {
+        font-size: 1.4rem;
+    }
+
+    .menu-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* Responsive for 480px */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 12px;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .nav-title {
+        font-size: 1.2rem;
+    }
+
+    .menu-icon {
+        font-size: 1.4rem;
     }
 }
 
@@ -126,20 +182,20 @@ body {
 }
 
 /* Headings */
-h1,
-h2 {
+h1, h2 {
     text-align: center;
     font-weight: 600;
     margin-bottom: 20px;
     color: #4a90e2;
+    transition: font-size 0.3s ease-in-out;
 }
 
 h1 {
-    font-size: 2.4rem;
+    font-size: 2.6rem;
 }
 
 h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
 }
 
 /* Form */
@@ -156,8 +212,7 @@ label {
     color: #222;
 }
 
-input,
-select {
+input, select {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -165,8 +220,7 @@ select {
     transition: border-color 0.3s;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
     border-color: #4a90e2;
     outline: none;
 }
@@ -181,7 +235,7 @@ button {
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease-in-out;
 }
 
 button:hover {
@@ -198,7 +252,7 @@ button:hover {
 }
 
 .summary p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin: 10px 0;
 }
 
@@ -218,33 +272,14 @@ li {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     margin-bottom: 10px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease-in-out;
 }
 
 li:hover {
-    transform: scale(1.01);
+    transform: scale(1.02);
 }
 
 /* Responsive Adjustments */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .container {
-        padding: 20px;
-    }
-
-    button {
-        padding: 12px;
-    }
-}
-
-
 li.income {
     border-left: 5px solid #2ecc71;
 }
@@ -253,11 +288,16 @@ li.expense {
     border-left: 5px solid #e74c3c;
 }
 
-
+/* Page transition animations */
 .page {
     display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
 .page.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }

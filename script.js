@@ -1,17 +1,40 @@
-// Page switching
-function showPage(pageId) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(page => {
-        page.classList.remove('active');
+document.addEventListener("DOMContentLoaded", function () {
+    showPage('home'); // Show Home by default
+
+    const menuIcon = document.querySelector(".menu-icon");
+    const navMenu = document.getElementById("navMenu");
+
+    menuIcon.addEventListener("click", function () {
+        navMenu.classList.toggle("show");
     });
 
-    document.getElementById(pageId).classList.add('active');
+    // Close menu on item click (for mobile)
+    document.querySelectorAll(".nav-menu li a").forEach(link => {
+        link.addEventListener("click", function () {
+            navMenu.classList.remove("show");
+        });
+    });
+});
+
+// Page switching with smooth animation
+function showPage(pageId) {
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(page => {
+        page.classList.remove("active", "fade-in");
+        page.style.display = "none"; // Hide all pages
+    });
+
+    const activePage = document.getElementById(pageId);
+    activePage.style.display = "block";
+    setTimeout(() => {
+        activePage.classList.add("active", "fade-in");
+    }, 50);
 }
 
 // Mobile menu toggle
 function toggleMenu() {
-    const navMenu = document.getElementById("navMenu");
-    navMenu.classList.toggle("show");
+    document.getElementById("navMenu").classList.toggle("show");
 }
 
 // Finance logic
@@ -36,6 +59,7 @@ document.getElementById("finance-form").addEventListener("submit", function (e) 
     this.reset();
 });
 
+// Update summary section
 function updateSummary() {
     let income = 0, expense = 0;
 
@@ -44,11 +68,12 @@ function updateSummary() {
         else expense += t.amount;
     });
 
-    document.querySelectorAll("#total-income").forEach(el => el.textContent = income.toFixed(2));
-    document.querySelectorAll("#total-expenses").forEach(el => el.textContent = expense.toFixed(2));
-    document.querySelectorAll("#balance").forEach(el => el.textContent = (income - expense).toFixed(2));
+    document.querySelector("#total-income").textContent = income.toFixed(2);
+    document.querySelector("#total-expenses").textContent = expense.toFixed(2);
+    document.querySelector("#balance").textContent = (income - expense).toFixed(2);
 }
 
+// Update recent transactions section
 function updateRecentTransactions() {
     const recent = transactions.slice(-5).reverse();
     const list = document.getElementById("recent-transactions");
@@ -57,20 +82,36 @@ function updateRecentTransactions() {
     recent.forEach(t => {
         const li = document.createElement("li");
         li.textContent = `${t.type.toUpperCase()}: $${t.amount} - ${t.category}`;
-        li.classList.add(t.type); // Add 'income' or 'expense' class
         list.appendChild(li);
     });
 }
 
+// Update history based on selected filter
 function updateHistory() {
+    const filter = document.getElementById('history-filter').value;
+    let filteredTransactions = transactions;
+
+    const now = new Date();
+    if (filter === 'last7') {
+        filteredTransactions = transactions.filter(t => new Date(t.date) > new Date(now.setDate(now.getDate() - 7)));
+    } else if (filter === 'thisMonth') {
+        filteredTransactions = transactions.filter(t => new Date(t.date).getMonth() === new Date().getMonth());
+    } else if (filter === 'lastMonth') {
+        filteredTransactions = transactions.filter(t => new Date(t.date).getMonth() === new Date().getMonth() - 1);
+    } else if (filter === 'thisYear') {
+        filteredTransactions = transactions.filter(t => new Date(t.date).getFullYear() === new Date().getFullYear());
+    } else if (filter === 'lastYear') {
+        filteredTransactions = transactions.filter(t => new Date(t.date).getFullYear() === new Date().getFullYear() - 1);
+    }
+
     const list = document.getElementById("transaction-list");
     list.innerHTML = "";
 
-    transactions.slice().reverse().forEach(t => {
+    filteredTransactions.reverse().forEach(t => {
         const li = document.createElement("li");
         const date = new Date(t.date).toLocaleString();
         li.textContent = `${date} - ${t.type.toUpperCase()}: $${t.amount} - ${t.category}`;
-        li.classList.add(t.type); // Add 'income' or 'expense' class
+        li.classList.add(t.type);
         list.appendChild(li);
     });
 }
@@ -79,59 +120,3 @@ function logout() {
     alert("Logging out...");
     // Redirect or clear user session here
 }
-
-
-function showPage(pageId) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(page => {
-        page.classList.remove('active');
-    });
-
-    document.getElementById(pageId).classList.add('active');
-}
-
-
-
-function updateHistory() {
-    const filter = document.getElementById("history-filter").value;
-    const list = document.getElementById("transaction-list");
-    list.innerHTML = "";
-
-    const now = new Date();
-    const filtered = transactions.filter(t => {
-        const date = new Date(t.date);
-        switch (filter) {
-            case "last7":
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(now.getDate() - 7);
-                return date >= sevenDaysAgo;
-            case "thisMonth":
-                return (
-                    date.getMonth() === now.getMonth() &&
-                    date.getFullYear() === now.getFullYear()
-                );
-            case "lastMonth":
-                const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1);
-                return (
-                    date.getMonth() === lastMonth.getMonth() &&
-                    date.getFullYear() === lastMonth.getFullYear()
-                );
-            case "thisYear":
-                return date.getFullYear() === now.getFullYear();
-            case "lastYear":
-                return date.getFullYear() === now.getFullYear() - 1;
-            default:
-                return true;
-        }
-    });
-
-    filtered.reverse().forEach(t => {
-        const li = document.createElement("li");
-        const date = new Date(t.date).toLocaleString();
-        li.textContent = `${date} - ${t.type.toUpperCase()}: $${t.amount} - ${t.category}`;
-        li.classList.add(t.type); // income/expense
-        list.appendChild(li);
-    });
-}
-
-showPage('home');
