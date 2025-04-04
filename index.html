@@ -1,44 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Finance Tracker</title>
+    <link rel="shortcut icon" href="title.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="nav-title">Personal Finance Tracker</div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#" onclick="showPage('home')">Home</a></li>
+            <li><a href="#" onclick="showPage('summary')">Summary</a></li>
+            <li><a href="#" onclick="showPage('history')">History</a></li>
+            <li><a href="#" onclick="showPage('profile')">Profile</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li> <!-- Added Logout Option -->
+        </ul>
+    </div>
+
     <div class="container">
-        <h1>Personal Finance Tracker</h1>
+        <!-- Home Page -->
+        <div id="home" class="page">
+            <form id="finance-form">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" required><br>
 
-        <!-- Form to add income or expenses -->
-        <form id="finance-form">
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" required><br>
+                <label for="category">Category:</label>
+                <input type="text" id="category" required><br>
 
-            <label for="category">Category:</label>
-            <input type="text" id="category" required><br>
+                <label for="type">Type:</label>
+                <select id="type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select><br>
 
-            <label for="type">Type:</label>
-            <select id="type">
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select><br>
+                <button type="submit">Add Transaction</button>
+            </form>
 
-            <button type="submit">Add Transaction</button>
-        </form>
-
-        <!-- Financial summary -->
-        <div class="summary">
-            <h2>Financial Overview</h2>
-            <p><strong>Total Income:</strong> <span id="total-income">0</span></p>
-            <p><strong>Total Expenses:</strong> <span id="total-expenses">0</span></p>
-            <p><strong>Balance:</strong> <span id="balance">0</span></p>
+            <h2>Recent Transactions (Last 5)</h2>
+            <ul id="recent-transactions"></ul>
         </div>
 
-        <h2>Transaction History</h2>
-        <ul id="transaction-list"></ul>
+        <!-- Summary Page -->
+        <div id="summary" class="page">
+            <div class="summary">
+                <h2>Financial Overview</h2>
+                <p><strong>Total Income:</strong> <span id="total-income">0</span></p>
+                <p><strong>Total Expenses:</strong> <span id="total-expenses">0</span></p>
+                <p><strong>Balance:</strong> <span id="balance">0</span></p>
+            </div>
+        </div>
+
+        <!-- Transaction History Page -->
+        <div id="history" class="page" style="display: none;">
+            <h2>Transaction History</h2>
+
+            <select id="history-filter" onchange="updateHistory()">
+                <option value="all">All Time</option>
+                <option value="last7">Last 7 Days</option>
+                <option value="thisMonth">This Month</option>
+                <option value="lastMonth">Last Month</option>
+                <option value="thisYear">This Year</option>
+                <option value="lastYear">Last Year</option>
+            </select>
+
+            <ul id="transaction-list"></ul>
+        </div>
+
+
+
+        <!-- Profile Page -->
+        <div id="profile" class="page">
+            <h2>User Profile</h2>
+            <p>Coming soon...</p>
+        </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
