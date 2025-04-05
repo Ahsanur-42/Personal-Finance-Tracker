@@ -77,10 +77,10 @@ function updateRecentTransactions() {
     recent.forEach(t => {
         const li = document.createElement("li");
         li.textContent = `${t.type.toUpperCase()}: $${t.amount} - ${t.category}`;
-        
+
         // Add color class
         li.classList.add(t.type);
-        
+
         list.appendChild(li);
     });
 }
@@ -120,13 +120,6 @@ function updateHistory() {
 
 // Logout function
 function logout() {
-    alert("Logging out...");
-    // Redirect or clear user session here
-}
-
-
-// Show logout confirmation modal
-function logout() {
     document.getElementById("logout-modal").style.display = "flex";
 }
 
@@ -159,4 +152,74 @@ function showToast(message) {
         toast.classList.remove("show"); // Slide-out effect
         setTimeout(() => toast.remove(), 300);
     }, 3000); // Hide after 3 seconds
+}
+
+// Function to create a new budget (reset all fields and show the form)
+function createNewBudget() {
+    // Reset the form fields
+    document.getElementById('budget-amount').value = '';
+    document.getElementById('budget-days').value = '7'; // Reset duration to default
+
+    // Hide the budget box and show the form again
+    document.getElementById('budget-box').style.display = 'none'; // Hide the budget box
+    document.getElementById('budget-form').style.display = 'block'; // Show the form
+
+    // Reset the current budget
+    currentBudget = 0;
+
+    // Optionally, reset other related fields (like custom days input visibility)
+    document.getElementById('custom-days-input').style.display = 'none';
+
+    // Show the budget page
+    showPage('budget');
+}
+
+// Handle form submission for setting the budget
+document.getElementById('budget-form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const budgetAmount = parseFloat(document.getElementById('budget-amount').value);
+    const budgetDuration = document.getElementById('budget-days').value;
+
+    if (isNaN(budgetAmount) || budgetAmount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+    }
+
+    // Display the budget box with the entered amount
+    document.getElementById('display-budget-amount').textContent = `$${budgetAmount.toFixed(2)}`;
+    document.getElementById('budget-box').style.display = 'block'; // Show the budget box
+
+    // Hide the budget form after setting the budget
+    document.getElementById('budget-form').style.display = 'none';
+
+    // Set the current budget to the entered amount
+    currentBudget = budgetAmount;
+});
+
+// Handle custom days visibility based on the selection
+document.getElementById('budget-days').addEventListener('change', function () {
+    if (this.value === 'customDays') {
+        document.getElementById('custom-days-input').style.display = 'block'; // Show custom days input
+    } else {
+        document.getElementById('custom-days-input').style.display = 'none'; // Hide custom days input
+    }
+});
+
+
+// This function is called when the user sets the budget
+function createBudget() {
+    // Get the budget value from the input (for example)
+    const budgetAmount = document.getElementById("budget-input").value;
+
+    // Check if the input is a valid number
+    if (budgetAmount && !isNaN(budgetAmount)) {
+        // Update the displayed budget amount
+        document.getElementById("display-budget-amount").textContent = `$${parseFloat(budgetAmount).toFixed(2)}`;
+
+        // Show the budget box after setting the budget
+        document.getElementById("budget-box").style.display = "block";
+    } else {
+        alert("Please enter a valid budget amount.");
+    }
 }

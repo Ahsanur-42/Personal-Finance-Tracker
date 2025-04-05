@@ -17,9 +17,10 @@
         <ul class="nav-menu" id="navMenu">
             <li><a href="#" onclick="showPage('home')">Home</a></li>
             <li><a href="#" onclick="showPage('summary')">Summary</a></li>
+            <li><a href="#" onclick="showPage('budget')">Budget</a></li>
             <li><a href="#" onclick="showPage('history')">History</a></li>
             <li><a href="#" onclick="showPage('profile')">Profile</a></li>
-            <li><a href="#" onclick="logout()">Logout</a></li> <!-- Added Logout Option -->
+            <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
     </div>
 
@@ -35,6 +36,7 @@
 
                 <label for="type">Type:</label>
                 <select id="type">
+                    <option value="Choose">Choose a</option>
                     <option value="income">Income</option>
                     <option value="expense">Expense</option>
                 </select><br>
@@ -47,12 +49,59 @@
         </div>
 
         <!-- Summary Page -->
-        <div id="summary" class="page">
+        <div id="summary" class="page" style="display: none;">
             <div class="summary">
                 <h2>Financial Overview</h2>
                 <p><strong>Total Income:</strong> <span id="total-income">0</span></p>
                 <p><strong>Total Expenses:</strong> <span id="total-expenses">0</span></p>
                 <p><strong>Balance:</strong> <span id="balance">0</span></p>
+                <p><strong>Budget:</strong> <span id="summary-budget">0</span><br><br> <button
+                        onclick="showPage('budget')">View
+                        Budget</button></p>
+            </div>
+        </div>
+
+
+        <!-- Budget Page -->
+        <div id="budget" class="page" style="display: none;">
+            <h2>Budget Planning</h2>
+            <form id="budget-form">
+
+                <!-- Amount Input for Budget -->
+                <label for="budget-amount">Amount:</label>
+                <input type="number" id="budget-amount" required><br>
+
+                <!-- Category Input for Budget -->
+                <label for="budget-days">Budget Duration:</label>
+                <select id="budget-days">
+                    <option value="7">7 Days</option>
+                    <option value="15">15 Days</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="customDays">Custom Days</option>
+                </select><br>
+
+                <div id="custom-days-input" style="display: none;">
+                    <label for="custom-days-count">Enter number of days:</label>
+                    <input type="number" id="custom-days-count" min="1" placeholder="e.g. 10">
+                </div><br>
+
+
+                <button type="submit">Set Budget</button>
+            </form>
+
+            <!-- Display the budget box after setting the budget -->
+            <div id="budget-box" class="budget-box" style="display: none;">
+                <h3>Your Budget</h3>
+                <p><strong>Amount Set: </strong><span id="display-budget-amount"></span></p>
+
+                <!-- Buttons for Add Budget and Create New Budget -->
+                <button onclick="addBudget()">Add Budget</button>
+                <button onclick="createNewBudget()">Create New Budget</button>
+            </div>
+            <div class="expense-list">
+                <h3>Expense List</h3>
+                <ul id="budget-expense-list"></ul>
             </div>
         </div>
 
@@ -72,15 +121,12 @@
             <ul id="transaction-list"></ul>
         </div>
 
-
-
         <!-- Profile Page -->
-        <div id="profile" class="page">
+        <div id="profile" class="page" style="display: none;">
             <h2>User Profile</h2>
             <p>Coming soon...</p>
         </div>
     </div>
-
 
     <!-- Logout Confirmation Modal -->
     <div id="logout-modal" class="modal">
@@ -93,7 +139,6 @@
             </div>
         </div>
     </div>
-
 
     <script src="script.js"></script>
 </body>
